@@ -1,0 +1,27 @@
+version: '3.7'
+services:
+  nginx_rich:
+    image: nginx:1.15-alpine
+    ports:
+      - "81:80"
+      - "444:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./etc/ssl/:/etc/ssl
+    depends_on:
+      - where-are-you-going
+    networks:
+      - app-network
+
+  where-are-you-going:
+    container_name: where-are-you-going
+    build: .
+    restart: always
+    ports:
+      - "5001:5001"
+    networks:
+      - app-network
+
+networks:
+  app-network:
